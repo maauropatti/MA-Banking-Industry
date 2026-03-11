@@ -2,7 +2,7 @@
 ### M&A Mediobanca × Banca Generali — Analisi dei Multipli, Sinergie e Valutazione
 
 
-> **[🔗 Visualizza la Dashboard Interattiva](https://YOUR_USERNAME.github.io/MA-Banking-Industry/)**
+> **[🔗 Visualizza la Dashboard Interattiva](https://maauropatti.github.io/MA-Banking-Industry/)**
 
 ---
 
