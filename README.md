@@ -1,9 +1,6 @@
 # Value Creation in Banking Industry
 ### M&A Mediobanca × Banca Generali — Analisi dei Multipli, Sinergie e Valutazione
 
-<p align="center">
-  <img src="docs/preview.png" alt="Dashboard Preview" width="800">
-</p>
 
 > **[🔗 Visualizza la Dashboard Interattiva](https://YOUR_USERNAME.github.io/MA-Banking-Industry/)**
 
