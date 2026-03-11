@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Lab — Value Creation in Banking Industry</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06070b;--s1:#0d0f16;--s2:#13151f;--s3:#191c28;--bd:#1e2233;--bd2:#2a2f44;--gold:#d4a84b;--gd:rgba(212,168,75,.12);--blue:#5b8fd9;--bd3:rgba(91,143,217,.12);--grn:#3ec98a;--gd2:rgba(62,201,138,.12);--red:#e05c5c;--rd:rgba(224,92,92,.12);--prp:#9b7fd4;--pd:rgba(155,127,212,.12);--txt:#e4e0d6;--t2:#8b8a9e;--t3:#555670;--mb:#4dac26;--trad:#2166ac;--sgr:#d6604d}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;line-height:1.6;overflow-x:hidden}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(6,7,11,.92);backdrop-filter:blur(28px);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 40px;height:56px;gap:4px}
+.nav-brand{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold);margin-right:32px;white-space:nowrap;display:flex;align-items:center;gap:10px}
+.nav-brand .dot{width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block}
+.nav-link{padding:10px 18px;border:none;background:transparent;color:var(--t3);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.5px;cursor:pointer;transition:all .25s;border-radius:4px;white-space:nowrap;position:relative}
+.nav-link:hover{color:var(--t2);background:rgba(255,255,255,.03)}
+.nav-link.active{color:var(--gold);background:var(--gd)}
+.nav-link.active::after{content:'';position:absolute;bottom:-1px;left:18px;right:18px;height:2px;background:var(--gold);border-radius:1px}
+.nav-sep{width:1px;height:24px;background:var(--bd);margin:0 8px}
+
+/* ── HERO ── */
+.hero{margin-top:56px;padding:52px 48px 40px;background:linear-gradient(180deg,#0a0c14 0%,var(--bg) 100%);border-bottom:1px solid var(--bd);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-100px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(212,168,75,.035) 0%,transparent 70%);pointer-events:none}
+.hero h1{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--gold);letter-spacing:-1px;line-height:1.1}.hero h1 span{color:var(--txt);font-weight:400}
+.hero-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);letter-spacing:3px;text-transform:uppercase;margin-top:8px}
+.hero-kpis{display:flex;gap:36px;margin-top:24px;flex-wrap:wrap}
+.hero-kpi .lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:2px;text-transform:uppercase}
+.hero-kpi .val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+.val-gold{color:var(--gold)}.val-grn{color:var(--grn)}.val-blue{color:var(--blue)}
+
+/* ── SECTIONS ── */
+.section{display:none;padding:32px 48px 48px;animation:fadeIn .35s ease}.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.stitle{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:6px}
+.ssub{font-size:13px;color:var(--t2);margin-bottom:24px;max-width:750px;line-height:1.8}
+
+/* ── CARDS ── */
+.g{display:grid;gap:18px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g1{grid-template-columns:1fr}
+.c{background:var(--s1);border:1px solid var(--bd);border-radius:6px;padding:22px;position:relative;overflow:hidden;transition:border-color .3s}.c:hover{border-color:var(--bd2)}
+.c::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:.5}
+.c.ag::before{background:var(--gold)}.c.ab::before{background:var(--blue)}.c.agr::before{background:var(--grn)}.c.ar::before{background:var(--red)}.c.ap::before{background:var(--prp)}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--t3)}
+.tg{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 10px;border-radius:3px;letter-spacing:1px;text-transform:uppercase}
+.tg-g{background:var(--gd);color:var(--gold);border:1px solid rgba(212,168,75,.25)}.tg-b{background:var(--bd3);color:var(--blue);border:1px solid rgba(91,143,217,.25)}.tg-gr{background:var(--gd2);color:var(--grn);border:1px solid rgba(62,201,138,.25)}.tg-r{background:var(--rd);color:var(--red);border:1px solid rgba(224,92,92,.25)}
+
+/* ── TABLES ── */
+.dt{width:100%;border-collapse:collapse}.dt th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);text-align:right;padding:8px 10px;border-bottom:1px solid var(--bd)}.dt th:first-child{text-align:left}
+.dt td{padding:7px 10px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:12px;border-bottom:1px solid rgba(30,34,51,.5)}.dt td:first-child{text-align:left;font-family:'DM Sans',sans-serif;color:var(--t2);font-size:12px}
+.dt tr.sh td{color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding-top:14px;padding-bottom:4px;border-bottom:none}
+.dt tr.tot td{color:var(--gold);font-weight:600;border-top:1px solid var(--bd)}.dt tr.neg td{color:var(--red)}.dt tr.ebt td{color:var(--blue);font-weight:600}.dt tr.nir td{color:var(--grn);font-weight:700;font-size:13px}
+.mt{width:100%;border-collapse:collapse}.mt th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--t3);text-align:center;padding:7px 5px;border-bottom:1px solid var(--bd)}.mt th:first-child{text-align:left}
+.mt td{padding:5px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;border-bottom:1px solid rgba(30,34,51,.4)}.mt td:first-child{text-align:left;font-family:'DM Sans',sans-serif}
+.mt tr.hmb td{background:rgba(77,172,38,.06)}
+
+/* ── CHART ── */
+.cw{position:relative;height:260px}.cw.tall{height:320px}.cw.sh{height:200px}
+
+/* ── SCENARIO ── */
+.sbar{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding:14px 20px;background:var(--s1);border:1px solid var(--bd);border-radius:6px}
+.sbar .sl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-right:8px}
+.sb{padding:7px 20px;border:1px solid var(--bd);background:transparent;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .25s;border-radius:3px}
+.sb:hover{border-color:var(--gold);color:var(--gold)}
+.sb.sp{background:var(--rd);border-color:var(--red);color:var(--red)}.sb.sba{background:var(--gd);border-color:var(--gold);color:var(--gold)}.sb.so{background:var(--gd2);border-color:var(--grn);color:var(--grn)}
+#sbadge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;padding:4px 14px;border-radius:3px;text-transform:uppercase;margin-left:auto}
+
+/* ── MCAP ── */
+.mg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.mb{background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:18px;text-align:center}
+.mb .ml{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.mb .mv{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+.mb .ms{font-size:10px;color:var(--t3);margin-top:4px}
+.pr{display:flex;gap:14px;margin-top:14px}.pb{flex:1;background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px 16px}
+.pb .pl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+.pb .pv{font-family:'Playfair Display',serif;font-size:22px;font-weight:700}
+
+/* ── MISC ── */
+.ib{background:var(--s2);border:1px solid var(--bd);border-left:3px solid var(--gold);border-radius:0 5px 5px 0;padding:14px 18px;font-size:12px;color:var(--t2);line-height:1.8;margin-top:14px}
+.lr{display:flex;gap:18px;margin-bottom:12px;flex-wrap:wrap}.li{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t2)}.ld{width:10px;height:10px;border-radius:2px}
+.yp{display:flex;gap:6px;margin-bottom:14px}
+.yb{padding:5px 14px;border:1px solid var(--bd);background:transparent;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;border-radius:3px;transition:all .2s}
+.yb:hover{border-color:var(--blue);color:var(--blue)}.yb.active{background:var(--bd3);border-color:var(--blue);color:var(--blue)}
+.dc{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.de{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:20px}
+.de h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:10px}
+.de p{font-size:12px;color:var(--t2);line-height:1.7}
+.de.dmb h3{color:var(--mb)}.de.dbg h3{color:var(--blue)}
+.mp{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.mpi{padding:4px 12px;background:var(--s3);border:1px solid var(--bd);border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2)}.mpi strong{color:var(--txt)}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.sc{background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px}
+.sc .scl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.rbw{margin-top:12px}.rlr{display:flex;justify-content:space-between;margin-bottom:5px;font-size:11px}.rlr span:last-child{color:var(--gold);font-weight:600}
+.rbg{height:7px;background:var(--s2);border-radius:4px;overflow:hidden}.rf{height:100%;border-radius:4px;transition:width .6s ease}
+.ft{padding:18px 48px;border-top:1px solid var(--bd);color:var(--t3);font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
+
+/* Project description box */
+.proj-desc{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:28px 32px;margin-bottom:24px;position:relative;overflow:hidden}
+.proj-desc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue),var(--grn));opacity:.6}
+.proj-desc h3{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold);margin-bottom:12px}
+.proj-desc p{font-size:13px;color:var(--t2);line-height:1.9;margin-bottom:10px}
+.proj-desc .chapters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px}
+.proj-desc .ch-item{background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px 16px}
+.proj-desc .ch-item .num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:4px}
+.proj-desc .ch-item .chlbl{font-size:11px;color:var(--t2);line-height:1.6}
+.proj-desc .ch-item .chtit{font-size:13px;font-weight:600;color:var(--txt);margin-bottom:4px}
+
+/* Gap table in regression */
+.gap-tbl{width:100%;border-collapse:collapse;margin-top:12px}
+.gap-tbl th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--t3);text-align:right;padding:6px 8px;border-bottom:1px solid var(--bd)}.gap-tbl th:first-child{text-align:left}
+.gap-tbl td{padding:5px 8px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;border-bottom:1px solid rgba(30,34,51,.4)}.gap-tbl td:first-child{text-align:left;font-family:'DM Sans',sans-serif;font-weight:500}
+.gap-tbl tr.hmb td{background:rgba(77,172,38,.08);font-weight:600}
+
+@media(max-width:900px){.g2,.g3,.mg,.sg,.dc,.proj-desc .chapters{grid-template-columns:1fr}.pr{flex-direction:column}.hero-kpis{flex-wrap:wrap;gap:16px}.nav{padding:0 12px;overflow-x:auto}.section,.hero{padding-left:16px;padding-right:16px}}
+canvas{max-height:340px}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <div class="nav-brand"><span class="dot"></span>Finance Lab</div>
+  <div class="nav-sep"></div>
+  <button class="nav-link active" onclick="go('overview',this)">Overview</button>
+  <button class="nav-link" onclick="go('multipli',this)">Analisi Multipli</button>
+  <button class="nav-link" onclick="go('regressione',this)">Regressione & Gap</button>
+  <button class="nav-link" onclick="go('deal',this)">OPS Deal</button>
+  <button class="nav-link" onclick="go('sinergie',this)">Sinergie</button>
+  <button class="nav-link" onclick="go('valuation',this)">Valutazione</button>
+</nav>
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <h1>Value Creation <span>in</span> Banking Industry</h1>
+  <div class="hero-sub">M&A Mediobanca × Banca Generali · Analisi completa dei multipli, sinergie e valutazione</div>
+  <div class="hero-kpis">
+    <div class="hero-kpi"><div class="lbl">ROTE Pre</div><div class="val val-gold">12.4%</div></div>
+    <div class="hero-kpi"><div class="lbl">ROTE Post</div><div class="val val-grn">>20%</div></div>
+    <div class="hero-kpi"><div class="lbl">TFA Combined</div><div class="val val-blue">>€210B</div></div>
+    <div class="hero-kpi"><div class="lbl">Sinergie Tot.</div><div class="val val-gold">€300M</div></div>
+    <div class="hero-kpi"><div class="lbl">P/E Post-OPS</div><div class="val val-blue">12.4x</div></div>
+    <div class="hero-kpi"><div class="lbl">ΔMkt Cap</div><div class="val val-grn">+€5.7B</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
+<div id="sec-overview" class="section active">
+
+<!-- PROJECT DESCRIPTION -->
+<div class="proj-desc">
+  <h3>Il Progetto</h3>
+  <p>Questo lavoro analizza la <strong>creazione di valore nel settore bancario italiano</strong>, partendo da una diagnostica dei multipli di mercato delle principali banche quotate per arrivare alla valutazione dell'OPS (Offerta Pubblica di Scambio) di <strong>Mediobanca su Banca Generali</strong>.</p>
+  <p>L'analisi si sviluppa in tre capitoli interconnessi: dalla comprensione di come il mercato prezza le banche, all'identificazione dei driver di valore, fino alla stima dell'impatto finanziario dell'operazione sugli azionisti.</p>
+  <div class="chapters">
+    <div class="ch-item">
+      <div class="num" style="color:var(--gold)">01</div>
+      <div class="chtit">Capital Market Diagnostic</div>
+      <div class="chlbl">Analisi diagnostica dei multipli (P/E, P/BV) delle principali banche italiane. Confronto tra gestori di risparmio, banche tradizionali e Mediobanca per capire chi tratta a premio o a sconto.</div>
+    </div>
+    <div class="ch-item">
+      <div class="num" style="color:var(--blue)">02</div>
+      <div class="chtit">Drivers di Valutazione</div>
+      <div class="chlbl">Il ROTE come driver principale dei multipli. Regressione lineare su 7 banche (2022–2024), identificazione del gap di valutazione e delle leve strategiche per incrementare la redditività.</div>
+    </div>
+    <div class="ch-item">
+      <div class="num" style="color:var(--grn)">03</div>
+      <div class="chtit">OPS su Banca Generali</div>
+      <div class="chlbl">Impatto finanziario dell'acquisizione: sinergie di ricavo, costo e funding, re-rating dei multipli, nuova market cap stimata. Tre scenari con analisi di sensitività.</div>
+    </div>
+  </div>
+</div>
+
+<h2 class="stitle">Executive Overview</h2>
+<p class="ssub">I numeri chiave dell'analisi: la forza della relazione ROTE–multipli, il posizionamento di Mediobanca e l'impatto atteso dell'OPS.</p>
+
+<div class="g g3" style="margin-bottom:18px">
+  <div class="c ag"><div class="ch"><span class="cl">P/B vs ROTE</span><span class="tg tg-g">R²=0.747</span></div><div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--gold)">0.747</div><div style="font-size:11px;color:var(--t2);margin-top:4px">Coefficiente di determinazione</div><div style="font-size:12px;color:var(--t3);margin-top:10px">P/B = 13.54 × ROTE − 0.78</div><div style="font-size:11px;color:var(--t3);margin-top:4px">Relazione forte — ogni +1pp ROTE → +0.14x P/B</div></div></div>
+  <div class="c ab"><div class="ch"><span class="cl">P/E vs ROTE</span><span class="tg tg-b">R²=0.377</span></div><div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--blue)">0.377</div><div style="font-size:11px;color:var(--t2);margin-top:4px">Coefficiente di determinazione</div><div style="font-size:12px;color:var(--t3);margin-top:10px">P/E = 28.62 × ROTE + 4.18</div><div style="font-size:11px;color:var(--t3);margin-top:4px">Più debole — P/E cattura anche crescita attesa</div></div></div>
+  <div class="c agr"><div class="ch"><span class="cl">Gap MB P/E</span><span class="tg tg-gr">Premium</span></div><div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--grn)">+0.85</div><div style="font-size:11px;color:var(--t2);margin-top:4px">P/E sopra la regressione (media 2022–24)</div><div style="font-size:12px;color:var(--t3);margin-top:10px">Il mercato premia il business model ibrido</div><div style="font-size:11px;color:var(--t3);margin-top:4px">Gap usato → P/E target: 10.6x + 1.8x = 12.4x</div></div></div>
+</div>
+<div class="g g2">
+  <div class="c ag"><div class="ch"><span class="cl">Campione & Metodologia</span></div>
+    <div style="font-size:12px;color:var(--t2);line-height:2">
+      <strong style="color:var(--txt)">Campione:</strong> 7 banche italiane quotate · 2022–2027E (consensus FactSet)<br>
+      <strong style="color:var(--sgr)">Gestori:</strong> FinecoBank, Banca Generali, Banca Mediolanum<br>
+      <strong style="color:var(--trad)">Tradizionali:</strong> UniCredit, Intesa Sanpaolo, Banco BPM<br>
+      <strong style="color:var(--mb)">Ibrida:</strong> Mediobanca<br>
+      <strong style="color:var(--txt)">Modello:</strong> Regressione OLS su dati 2022–2024 · Variabile: ROTE<br>
+      <strong style="color:var(--txt)">Fonti:</strong> FactSet, presentazione OPS Mediobanca (sezione investors)
+    </div>
+  </div>
+  <div class="c ab"><div class="ch"><span class="cl">P/B vs ROTE — Scatter 2022-2024</span><span class="tg tg-b">21 osservazioni</span></div><div class="cw"><canvas id="ovScatter"></canvas></div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════ MULTIPLI ═══════════════════════ -->
+<div id="sec-multipli" class="section">
+<h2 class="stitle">Analisi dei Multipli di Mercato</h2>
+<p class="ssub">Confronto P/E, P/B e ROTE tra i tre cluster di banche nel periodo 2022–2027E. I gestori di risparmio trattano strutturalmente a multipli più elevati, coerentemente con un ROTE superiore e modelli fee-based meno ciclici.</p>
+<div class="lr"><div class="li"><div class="ld" style="background:#d6604d"></div>Gestori di risparmio</div><div class="li"><div class="ld" style="background:#2166ac"></div>Banche tradizionali</div><div class="li"><div class="ld" style="background:#4dac26"></div>Mediobanca</div></div>
+<div class="yp" id="yp">
+  <button class="yb active" data-year="2024" onclick="setYr('2024')">2024</button>
+  <button class="yb" data-year="2025" onclick="setYr('2025')">2025E</button>
+  <button class="yb" data-year="2026" onclick="setYr('2026')">2026E</button>
+  <button class="yb" data-year="2027" onclick="setYr('2027')">2027E</button>
+</div>
+<div class="g g2" style="margin-bottom:18px">
+  <div class="c ag"><div class="ch"><span class="cl">P/E per Banca</span><span class="tg tg-g" id="peYT">2024</span></div><div class="cw tall"><canvas id="peBar"></canvas></div></div>
+  <div class="c ab"><div class="ch"><span class="cl">P/B per Banca</span><span class="tg tg-b" id="pbYT">2024</span></div><div class="cw tall"><canvas id="pbBar"></canvas></div></div>
+</div>
+<div class="g g1" style="margin-bottom:18px"><div class="c ag"><div class="ch"><span class="cl">Evoluzione P/E — 2022-2027E</span><span class="tg tg-g">trend</span></div><div class="cw tall"><canvas id="peLn"></canvas></div></div></div>
+<div class="g g1"><div class="c ab"><div class="ch"><span class="cl">Tabella Multipli Completa</span></div><div id="mtbl"></div></div></div>
+</div>
+
+<!-- ═══════════════════════ REGRESSIONE ═══════════════════════ -->
+<div id="sec-regressione" class="section">
+<h2 class="stitle">Regressione & Gap di Valutazione</h2>
+<p class="ssub">Il ROTE (Return on Tangible Equity) è il principale driver di valutazione per le banche italiane. La regressione lineare su 21 osservazioni (7 banche × 3 anni, 2022–2024) conferma una relazione robusta con il P/B (R²=0.747) e significativa ma più debole con il P/E (R²=0.377), dove incidono anche le aspettative di crescita degli utili e la qualità del business mix.</p>
+
+<div class="lr"><div class="li"><div class="ld" style="background:#d6604d"></div>Gestori di risparmio</div><div class="li"><div class="ld" style="background:#2166ac"></div>Banche tradizionali</div><div class="li"><div class="ld" style="background:#4dac26"></div>Mediobanca</div><div class="li"><div style="width:20px;height:2px;border-top:2px dashed #888"></div>Regressione OLS</div></div>
+
+<div class="g g2" style="margin-bottom:18px">
+  <div class="c ag"><div class="ch"><span class="cl">P/B vs ROTE — Regressione</span><span class="tg tg-g">R²=0.747</span></div><div class="cw tall"><canvas id="sPB"></canvas></div>
+    <div class="ib" style="margin-top:12px"><strong style="color:var(--gold)">P/B = 13.54 × ROTE − 0.78</strong> — Relazione forte. Ogni punto di ROTE aggiuntivo si traduce in +0.14x di P/B. I gestori (arancione) si collocano in alto a destra, le banche tradizionali (blu) in basso a sinistra. Mediobanca (verde) è in posizione intermedia, coerente con il ROTE in crescita.</div>
+  </div>
+  <div class="c ab"><div class="ch"><span class="cl">P/E vs ROTE — Regressione</span><span class="tg tg-b">R²=0.377</span></div><div class="cw tall"><canvas id="sPE"></canvas></div>
+    <div class="ib" style="margin-top:12px;border-left-color:var(--blue)"><strong style="color:var(--blue)">P/E = 28.62 × ROTE + 4.18</strong> — Correlazione più debole. Il P/E incorpora aspettative di crescita e qualità del business mix non catturate dal solo ROTE. FinecoBank risulta la più sopravvalutata, Mediobanca ha un gap positivo contenuto (+0.85).</div>
+  </div>
+</div>
+
+<div class="g g2" style="margin-bottom:18px">
+  <div class="c agr"><div class="ch"><span class="cl">Gap di Valutazione — P/B</span><span class="tg tg-gr">osservato − atteso</span></div><div class="cw"><canvas id="gPB"></canvas></div></div>
+  <div class="c ap"><div class="ch"><span class="cl">Gap di Valutazione — P/E</span><span class="tg" style="background:var(--pd);color:var(--prp);border:1px solid rgba(155,127,212,.25)">osservato − atteso</span></div><div class="cw"><canvas id="gPE"></canvas></div></div>
+</div>
+
+<!-- Gap Tables -->
+<div class="g g2" style="margin-bottom:18px">
+  <div class="c ag"><div class="ch"><span class="cl">Tabella Gap — P/B</span></div>
+    <table class="gap-tbl">
+      <thead><tr><th>Banca</th><th>ROTE medio</th><th>P/B medio</th><th>P/B atteso</th><th>Gap</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#d6604d">FinecoBank</td><td>30.4%</td><td>4.40</td><td>3.35</td><td style="color:var(--grn)">+1.06</td></tr>
+        <tr class="hmb"><td style="color:#4dac26">Mediobanca</td><td>11.0%</td><td>0.83</td><td>0.71</td><td style="color:var(--grn)">+0.13</td></tr>
+        <tr><td style="color:#2166ac">Banco BPM</td><td>10.1%</td><td>0.63</td><td>0.60</td><td style="color:var(--grn)">+0.04</td></tr>
+        <tr><td style="color:#d6604d">Banca Generali</td><td>31.7%</td><td>3.53</td><td>3.51</td><td style="color:var(--grn)">+0.02</td></tr>
+        <tr><td style="color:#2166ac">Intesa Sanpaolo</td><td>14.9%</td><td>0.90</td><td>1.24</td><td style="color:var(--red)">−0.34</td></tr>
+        <tr><td style="color:#2166ac">UniCredit</td><td>13.6%</td><td>0.70</td><td>1.07</td><td style="color:var(--red)">−0.37</td></tr>
+        <tr><td style="color:#d6604d">Mediolanum</td><td>24.2%</td><td>1.97</td><td>2.51</td><td style="color:var(--red)">−0.54</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="c ab"><div class="ch"><span class="cl">Tabella Gap — P/E</span></div>
+    <table class="gap-tbl">
+      <thead><tr><th>Banca</th><th>ROTE medio</th><th>P/E medio</th><th>P/E atteso</th><th>Gap</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#d6604d">FinecoBank</td><td>30.4%</td><td>17.77</td><td>12.89</td><td style="color:var(--grn)">+4.88</td></tr>
+        <tr class="hmb"><td style="color:#4dac26">Mediobanca</td><td>11.0%</td><td>8.17</td><td>7.32</td><td style="color:var(--grn)">+0.85</td></tr>
+        <tr><td style="color:#d6604d">Banca Generali</td><td>31.7%</td><td>13.07</td><td>13.24</td><td style="color:var(--red)">−0.17</td></tr>
+        <tr><td style="color:#2166ac">Banco BPM</td><td>10.1%</td><td>6.87</td><td>7.08</td><td style="color:var(--red)">−0.21</td></tr>
+        <tr><td style="color:#2166ac">Intesa Sanpaolo</td><td>14.9%</td><td>7.77</td><td>8.43</td><td style="color:var(--red)">−0.67</td></tr>
+        <tr><td style="color:#2166ac">UniCredit</td><td>13.6%</td><td>5.73</td><td>8.07</td><td style="color:var(--red)">−2.34</td></tr>
+        <tr><td style="color:#d6604d">Mediolanum</td><td>24.2%</td><td>8.77</td><td>11.11</td><td style="color:var(--red)">−2.35</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="ib"><strong style="color:var(--gold)">Implicazione per l'OPS:</strong> Mediobanca ha un gap P/E positivo medio di +0.85, che sale a +1.8x considerando il premium specifico del suo business model (in media il mercato la valuta 1.8x sopra il P/E atteso dal modello). Con ROTE post-OPS al 20%, il P/E atteso dal modello sale a 10.6x. Aggiungendo il gap strutturale: <strong style="color:var(--gold)">P/E target = 10.6x + 1.8x = 12.4x</strong>.</div>
+</div>
+
+<!-- ═══════════════════════ DEAL ═══════════════════════ -->
+<div id="sec-deal" class="section">
+<h2 class="stitle">OPS Mediobanca — Banca Generali</h2>
+<p class="ssub">L'operazione segna una svolta nella strategia di Mediobanca, che consolida la sua evoluzione verso un modello focalizzato sul Wealth Management. Grazie alla riallocazione del capitale dalle attività assicurative (~€6B) al WM, il gruppo rafforza scala, efficienza e redditività.</p>
+
+<div class="dc">
+  <div class="de dmb">
+    <h3>Mediobanca</h3>
+    <p>Gruppo finanziario diversificato con tre pilastri: credito al consumo (Compass, RoRWA ~2.9%), Wealth Management (Premier, Private Banking, SGR) e Corporate & Investment Banking (advisory M&A, ECM, lending). Si concentra su clientela ad alto valore con ricavi commissionali crescenti.</p>
+    <div class="mp"><div class="mpi">ROTE <strong>12.4%</strong></div><div class="mpi">P/E <strong>10.2x</strong></div><div class="mpi">WM Rev <strong>26%</strong></div><div class="mpi">CET1 <strong>~15%</strong></div><div class="mpi">NI WM <strong>&lt;20%</strong></div></div>
+  </div>
+  <div class="de dbg">
+    <h3>Banca Generali</h3>
+    <p>Banca specializzata nel wealth management per famiglie e individui ad alta patrimonializzazione (HNWI). Rete capillare di ~3.700 consulenti su tutto il territorio italiano, modello aperto e digitale. Focus: relazione di lungo periodo con il cliente, con 2/3 della base clienti Private (&gt;€500k).</p>
+    <div class="mp"><div class="mpi">ROTE <strong>~28%</strong></div><div class="mpi">P/E <strong>13.9x</strong></div><div class="mpi">Depositi <strong>€40B</strong></div><div class="mpi">TFA <strong>>€100B</strong></div><div class="mpi">Rete <strong>~3.700</strong></div></div>
+  </div>
+</div>
+
+<!-- Deal Rationale -->
+<div class="g g2" style="margin-bottom:18px">
+  <div class="c ag"><div class="ch"><span class="cl">Deal Rationale</span><span class="tg tg-g">dichiarato dal gruppo</span></div>
+    <div style="font-size:12px;color:var(--t2);line-height:2">
+      <strong style="color:var(--gold)">Riposizionamento WM:</strong><br>
+      · Ricavi WM: da €1,0B a €2,0B<br>
+      · Incidenza ricavi WM: dal 26% al 45% del totale<br>
+      · Utile netto WM: da &gt;€0,2B a €0,8B (dal &lt;20% al 50%)<br>
+      · Riallocazione capitale Insurance → WM: ~€6 miliardi<br><br>
+      <strong style="color:var(--blue)">Scala & Efficienza:</strong><br>
+      · TFA combined post-fusione: &gt;€210 miliardi<br>
+      · Posizionamento: Top 3 operatori italiani per masse<br>
+      · Rete combinata: ~3.700 professionisti
+    </div>
+  </div>
+  <div class="c agr"><div class="ch"><span class="cl">Creazione di valore per azionisti</span></div>
+    <div style="font-size:12px;color:var(--t2);line-height:2">
+      <strong style="color:var(--grn)">Impatti finanziari:</strong><br>
+      · ROTE: da 14% a &gt;20% — trasformazione strutturale<br>
+      · Utile netto gruppo: +15%<br>
+      · CET1 ratio post-operazione: ~14% (stabile)<br><br>
+      <strong style="color:var(--gold)">Distribuzione:</strong><br>
+      · Remunerazione cumulata FY23–26: €4 miliardi<br>
+      · Yield atteso azionisti (18 mesi): 22%<br>
+      · Nessun aumento di capitale necessario<br><br>
+      <strong style="color:var(--blue)">Funding:</strong><br>
+      · Depositi: da €28B a €40B · LDR: 1.9x → 1.4x<br>
+      · RWA density: dal 48% a &lt;40%
+    </div>
+  </div>
+</div>
+
+<!-- Leve ROTE -->
+<div class="c ab" style="margin-bottom:18px"><div class="ch"><span class="cl">6 Leve per il ROTE attivate dall'OPS</span><span class="tg tg-b">effetto sull'OPS</span></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px;border-left:3px solid var(--grn)">
+      <div style="font-size:12px;font-weight:600;color:var(--grn);margin-bottom:4px">↑ Più commissioni</div>
+      <div style="font-size:11px;color:var(--t2);line-height:1.6">Integrazione rete BG altamente produttiva. Impatto: margine commissionale, utile netto.</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px;border-left:3px solid var(--grn)">
+      <div style="font-size:12px;font-weight:600;color:var(--grn);margin-bottom:4px">↑ Più volumi WM</div>
+      <div style="font-size:11px;color:var(--t2);line-height:1.6">Crescita AUM aggregata e up/cross-selling. Impatto: AUM, ricavi ricorrenti.</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px;border-left:3px solid var(--grn)">
+      <div style="font-size:12px;font-weight:600;color:var(--grn);margin-bottom:4px">↓ Meno costi operativi</div>
+      <div style="font-size:11px;color:var(--t2);line-height:1.6">Razionalizzazione IT, staff centrale, back-office. Impatto: cost/income, utile operativo.</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px;border-left:3px solid var(--grn)">
+      <div style="font-size:12px;font-weight:600;color:var(--grn);margin-bottom:4px">↓ Meno rischio credito</div>
+      <div style="font-size:11px;color:var(--t2);line-height:1.6">Maggior peso business fee-based vs credito. Impatto: costo del rischio, profilo rischio.</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px;border-left:3px solid var(--blue)">
+      <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:4px">= Più efficienza RWA</div>
+      <div style="font-size:11px;color:var(--t2);line-height:1.6">Ribilanciamento verso attività meno capital intensive. RWA density &lt;40%.</div>
+    </div>
+    <div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:14px;border-left:3px solid var(--blue)">
+      <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:4px">= Deploy capitale in eccesso</div>
+      <div style="font-size:11px;color:var(--t2);line-height:1.6">Impiego capitale in attività redditizie. Impatto: CET1 tangibile, equity medio.</div>
+    </div>
+  </div>
+</div>
+
+<div class="ib"><strong style="color:var(--gold)">Sinergie dichiarate:</strong> €150M da costi (IT, HR, SG&A) + €85M da ricavi (cross-selling, ottimizzazione offerta) + €65M da funding (miglior ALM, minori costi di funding) = <strong>€300M totali</strong>. Costi di integrazione una tantum: €350M. Il rischio di esecuzione è contenuto grazie all'elevata compatibilità tra le due organizzazioni. In un contesto di tassi calanti, la transizione verso un modello fee-based è la leva strategica più potente per sostenere la redditività.</div>
+</div>
+
+<!-- ═══════════════════════ SINERGIE ═══════════════════════ -->
+<div id="sec-sinergie" class="section">
+<h2 class="stitle">Calcolo delle Sinergie</h2>
+<p class="ssub">Proiezione 2025–2028 delle sinergie di ricavo, costo e funding al netto dei costi di integrazione. I valori sono in migliaia di euro (€K). Tre scenari interattivi permettono di simulare l'impatto con assunzioni diverse su crescita e composizione.</p>
+<div class="sbar">
+  <span class="sl">Scenario</span>
+  <button class="sb" id="btn-p" onclick="setSc('pessimistic')">Pessimistic</button>
+  <button class="sb sba" id="btn-b" onclick="setSc('baseline')">Baseline</button>
+  <button class="sb" id="btn-o" onclick="setSc('optimistic')">Optimistic</button>
+  <div id="sbadge" style="background:var(--gd);color:var(--gold);border:1px solid rgba(212,168,75,.25)">BASELINE</div>
+</div>
+<div class="g g1" style="margin-bottom:18px"><div class="c ag"><div class="ch"><span class="cl">Sinergie & Costi di Integrazione</span><span class="tg tg-g">€ migliaia</span></div><table class="dt"><thead><tr><th>Voce</th><th>2025</th><th>2026</th><th>2027</th><th>2028</th></tr></thead><tbody id="stb"></tbody></table></div></div>
+<div class="g g2" style="margin-bottom:18px">
+  <div class="c ab"><div class="ch"><span class="cl">Composizione Sinergie per Anno</span><span class="tg tg-b">€K</span></div><div class="cw tall"><canvas id="synSt"></canvas></div></div>
+  <div class="c agr"><div class="ch"><span class="cl">Net Income Differenziale</span><span class="tg tg-gr">post-tax</span></div><div class="cw tall"><canvas id="niLn"></canvas></div></div>
+</div>
+<div class="g g2">
+  <div class="c ap"><div class="ch"><span class="cl">Confronto Scenari — NI 2028</span></div><div class="cw"><canvas id="scCmp"></canvas></div></div>
+  <div class="c ag"><div class="ch"><span class="cl">Breakdown Sinergie 2028</span></div><div class="cw"><canvas id="synDn"></canvas></div></div>
+</div>
+<div class="g g2" style="margin-top:18px">
+  <div class="c ab"><div class="ch"><span class="cl">Sensitività — Revenue Synergies</span></div><div class="sg">
+    <div class="sc"><div class="scl">Pessimistic</div><div style="font-size:11px;color:var(--t2);line-height:1.8">Cross-sell: <strong style="color:var(--red)">€25K</strong><br>Ottimizz.: <strong style="color:var(--red)">€10K</strong><br>Best pract.: <strong style="color:var(--red)">€5K</strong><br>Crescita: <strong style="color:var(--red)">2%</strong></div></div>
+    <div class="sc"><div class="scl">Baseline</div><div style="font-size:11px;color:var(--t2);line-height:1.8">Cross-sell: <strong style="color:var(--gold)">€45K</strong><br>Ottimizz.: <strong style="color:var(--gold)">€25K</strong><br>Best pract.: <strong style="color:var(--gold)">€10K</strong><br>Crescita: <strong style="color:var(--gold)">5%</strong></div></div>
+    <div class="sc"><div class="scl">Optimistic</div><div style="font-size:11px;color:var(--t2);line-height:1.8">Cross-sell: <strong style="color:var(--grn)">€60K</strong><br>Ottimizz.: <strong style="color:var(--grn)">€30K</strong><br>Best pract.: <strong style="color:var(--grn)">€15K</strong><br>Crescita: <strong style="color:var(--grn)">7%</strong></div></div>
+    <div class="sc"><div class="scl">Costi Integr.</div><div style="font-size:11px;color:var(--t2);line-height:1.8">Pessim.: <strong style="color:var(--red)">€315K</strong><br>Baseline: <strong style="color:var(--gold)">€235K</strong><br>Optim.: <strong style="color:var(--grn)">€170K</strong></div></div>
+  </div></div>
+  <div class="c agr"><div class="ch"><span class="cl">Sensitività — Cost & Funding</span></div><div class="sg">
+    <div class="sc"><div class="scl">Costi Pessim.</div><div style="font-size:11px;color:var(--t2);line-height:1.8">Effic.: <strong style="color:var(--red)">€20K</strong> · IT: <strong style="color:var(--red)">€16K</strong><br>HR: <strong style="color:var(--red)">€40K</strong> · g: <strong style="color:var(--red)">2%</strong></div></div>
+    <div class="sc"><div class="scl">Costi Optim.</div><div style="font-size:11px;color:var(--t2);line-height:1.8">Effic.: <strong style="color:var(--grn)">€60K</strong> · IT: <strong style="color:var(--grn)">€40K</strong><br>HR: <strong style="color:var(--grn)">€80K</strong> · g: <strong style="color:var(--grn)">7%</strong></div></div>
+    <div class="sc"><div class="scl">Funding Pessim.</div><div style="font-size:11px;color:var(--t2);line-height:1.8">ALM: <strong style="color:var(--red)">€20K</strong><br>CoF: <strong style="color:var(--red)">€12K</strong> · g: <strong style="color:var(--red)">2%</strong></div></div>
+    <div class="sc"><div class="scl">Funding Optim.</div><div style="font-size:11px;color:var(--t2);line-height:1.8">ALM: <strong style="color:var(--grn)">€60K</strong><br>CoF: <strong style="color:var(--grn)">€35K</strong> · g: <strong style="color:var(--grn)">7%</strong></div></div>
+  </div></div>
+</div>
+</div>
+
+<!-- ═══════════════════════ VALUTAZIONE ═══════════════════════ -->
+<div id="sec-valuation" class="section">
+<h2 class="stitle">Valutazione & Market Cap</h2>
+<p class="ssub">La nuova market cap viene calcolata come la somma degli utili stimati 2028 di entrambi gli operatori, sommata alle sinergie nette, il tutto moltiplicato per il nuovo multiplo P/E. Nel caso base i multipli sono quelli degli analisti (FactSet), nel caso OPS quello stimato dal nostro modello di regressione.</p>
+<div class="g g1" style="margin-bottom:18px"><div class="c ag">
+  <div class="ch"><span class="cl">Calcolo del Nuovo P/E Post-OPS</span><span class="tg tg-g">dal modello di regressione</span></div>
+  <div class="pr"><div class="pb"><div class="pl">ROTE Pre</div><div class="pv val-blue">12.4%</div></div><div class="pb"><div class="pl">ROTE Post</div><div class="pv val-grn">>20%</div></div><div class="pb"><div class="pl">P/E Modello (ROTE 20%)</div><div class="pv val-blue">10.6x</div></div><div class="pb"><div class="pl">Gap strutturale MB</div><div class="pv val-gold">+1.8x</div></div><div class="pb"><div class="pl">P/E Target Post-OPS</div><div class="pv val-gold">12.4x</div></div></div>
+  <div class="ib" style="margin-top:14px">Con ROTE al 20%, il modello di regressione (P/E = 28.62 × ROTE + 4.18) produce un P/E atteso di 10.6x. A questo si aggiunge il gap strutturale di Mediobanca: il mercato la valuta mediamente 1.8x sopra il P/E atteso, riflettendo la qualità percepita del suo business model diversificato ma specializzato. Il P/E target post-OPS è quindi <strong style="color:var(--gold)">12.4x</strong>, un re-rating di +2.2x rispetto al P/E pre-OPS di 10.2x.</div>
+</div></div>
+<div class="g g1" style="margin-bottom:18px"><div class="c agr">
+  <div class="ch"><span class="cl">Nuova Market Cap Stimata — 2028</span><span class="tg tg-gr">€ milioni</span></div>
+  <div class="mg">
+    <div class="mb"><div class="ml">Caso Base (entità separate)</div><div class="mv" style="color:var(--txt)">€20,699M</div><div class="ms">MB: €1,479M × 10.2x + BG: €403.8M × 13.9x</div></div>
+    <div class="mb"><div class="ml">Post-OPS senza sinergie</div><div class="mv" style="color:var(--gold)">€23,347M</div><div class="ms">(€1,479M + €403.8M) × 12.4x — re-rating</div></div>
+    <div class="mb"><div class="ml">Post-OPS con sinergie</div><div class="mv" style="color:var(--grn)" id="mcV">€26,423M</div><div class="ms" id="mcS">+ €248M NI sinergie × 12.4x</div></div>
+  </div>
+  <div class="pr" style="margin-top:14px">
+    <div class="pb"><div class="pl">ΔMarket Cap vs Standalone</div><div class="pv val-gold" id="dlV">+€5,724M</div></div>
+    <div class="pb"><div class="pl">P/E Post-OPS</div><div class="pv val-blue">12.4x</div></div>
+    <div class="pb"><div class="pl">P/E: modello + gap</div><div class="pv val-gold">10.6 + 1.8</div></div>
+    <div class="pb"><div class="pl">ROTE Target</div><div class="pv val-grn">>20%</div></div>
+  </div>
+</div></div>
+<div class="g g2">
+  <div class="c ag"><div class="ch"><span class="cl">Market Cap Waterfall</span></div><div class="cw tall"><canvas id="wf"></canvas></div></div>
+  <div class="c ab"><div class="ch"><span class="cl">ROTE — Posizionamento pre e post OPS</span></div><div style="padding:16px 0">
+    <div class="rbw"><div class="rlr"><span>MB pre-OPS</span><span>12.4%</span></div><div class="rbg"><div class="rf" style="width:44%;background:var(--blue)"></div></div></div>
+    <div class="rbw" style="margin-top:14px"><div class="rlr"><span>Banca Generali</span><span>~28%</span></div><div class="rbg"><div class="rf" style="width:100%;background:var(--sgr)"></div></div></div>
+    <div class="rbw" style="margin-top:14px"><div class="rlr"><span style="color:var(--grn)">Target post-OPS</span><span style="color:var(--grn)">>20%</span></div><div class="rbg"><div class="rf" style="width:71%;background:var(--grn)"></div></div></div>
+    <div class="rbw" style="margin-top:14px"><div class="rlr"><span>Media Gestori (Fineco, BG, Med.)</span><span>~30%</span></div><div class="rbg"><div class="rf" style="width:100%;background:var(--sgr);opacity:.4"></div></div></div>
+    <div class="rbw" style="margin-top:14px"><div class="rlr"><span>Media Banche tradizionali</span><span>~15%</span></div><div class="rbg"><div class="rf" style="width:54%;background:var(--trad);opacity:.4"></div></div></div>
+  </div><div class="ib" style="margin-top:8px">L'OPS porta Mediobanca dal cluster delle banche tradizionali (ROTE ~12-15%) verso il territorio dei gestori di risparmio puri (ROTE ~25-35%), con un ROTE >20% che giustifica multipli strutturalmente più elevati e un re-rating del titolo.</div></div>
+</div>
+</div>
+
+<div class="ft">Fonte: OPS Mediobanca (investor presentation), FactSet.com — Dati in €K salvo dove indicato · Regressione OLS su campione 2022-2024 (21 obs.) · Crescita baseline 5% · Corporate tax 25% · Finance Lab</div>
+
+<script>
+const B={
+"FinecoBank":{g:"sgr",c:"#d6604d",pe:{2022:23.1,2023:14,2024:16.2,2025:19.5,2026:18.4,2027:16.9},pb:{2022:5.1,2023:3.8,2024:4.3,2025:5,2026:4.7,2027:4.3},ro:{2022:.2338,2023:.3214,2024:.358,2025:.2974,2026:.2935,2027:.2899}},
+"Banca Generali":{g:"sgr",c:"#d6604d",pe:{2022:15.1,2023:12,2024:12.1,2025:15.1,2026:14.6,2027:13.9},pb:{2022:3.6,2023:3.3,2024:3.7,2025:3.8,2026:3.6,2027:3.4},ro:{2022:.2781,2023:.3167,2024:.3554,2025:.2781,2026:.2671,2027:.259}},
+"Banca Mediolanum":{g:"sgr",c:"#d6604d",pe:{2022:11,2023:7.7,2024:7.6,2025:11.7,2026:11.5,2027:10.9},pb:{2022:2,2023:1.8,2024:2.1,2025:2.8,2026:2.6,2027:2.2},ro:{2022:.1909,2023:.2468,2024:.2895,2025:.2222,2026:.2087,2027:.211}},
+"Mediobanca":{g:"mb",c:"#4dac26",pe:{2022:7.9,2023:7.7,2024:8.9,2025:12,2026:10.9,2027:10.5},pb:{2022:.7,2023:.8,2024:1,2025:1.4,2026:1.4,2027:1.3},ro:{2022:.0886,2023:.1169,2024:.1236,2025:.1333,2026:.1376,2027:.1429}},
+"Intesa Sanpaolo":{g:"trad",c:"#2166ac",pe:{2022:9,2023:6.4,2024:7.9,2025:9.1,2026:8.6,2027:8.1},pb:{2022:.7,2023:.8,2024:1.2,2025:1.4,2026:1.3,2027:1.3},ro:{2022:.1,2023:.1563,2024:.1899,2025:.1868,2026:.186,2027:.1975}},
+"UniCredit":{g:"trad",c:"#2166ac",pe:{2022:5.3,2023:5.2,2024:6.7,2025:9,2026:8.4,2027:7.6},pb:{2022:.4,2023:.7,2024:1,2025:1.4,2026:1.3,2027:1.2},ro:{2022:.0943,2023:.1346,2024:.1791,2025:.1667,2026:.1667,2027:.1711}},
+"Banco BPM":{g:"trad",c:"#2166ac",pe:{2022:7.2,2023:5.8,2024:7.6,2025:8.6,2026:8.5,2027:8.1},pb:{2022:.4,2023:.6,2024:.9,2025:1.1,2026:1.1,2027:1.1},ro:{2022:.0694,2023:.1034,2024:.1316,2025:.1744,2026:.1647,2027:.1728}}};
+const BO=["FinecoBank","Banca Generali","Banca Mediolanum","Mediobanca","Intesa Sanpaolo","UniCredit","Banco BPM"];
+const RG={pe:{m:28.6176,b:4.1758},pb:{m:13.5383,b:-.7767}};
+const GPE=[{b:"FinecoBank",v:4.879},{b:"Mediobanca",v:.852},{b:"Banca Generali",v:-.173},{b:"Banco BPM",v:-.213},{b:"Intesa Sanpaolo",v:-.665},{b:"UniCredit",v:-2.335},{b:"Banca Mediolanum",v:-2.345}];
+const GPB=[{b:"FinecoBank",v:1.055},{b:"Mediobanca",v:.125},{b:"Banco BPM",v:.036},{b:"Banca Generali",v:.022},{b:"Intesa Sanpaolo",v:-.337},{b:"UniCredit",v:-.365},{b:"Banca Mediolanum",v:-.538}];
+const SC={
+pessimistic:{rev:{cs:25e3,op:1e4,bp:5e3,g:.02},co:{ef:2e4,it:16e3,hr:4e4,g:.02},fu:{al:2e4,cf:12e3,g:.02},ig:{ic:12e4,it:55e3,ot:14e4},col:'#e05c5c',lb:'PESSIMISTIC'},
+baseline:{rev:{cs:45e3,op:25e3,bp:1e4,g:.05},co:{ef:3e4,it:3e4,hr:6e4,g:.05},fu:{al:4e4,cf:25e3,g:.05},ig:{ic:9e4,it:35e3,ot:11e4},col:'#d4a84b',lb:'BASELINE'},
+optimistic:{rev:{cs:6e4,op:3e4,bp:15e3,g:.07},co:{ef:6e4,it:4e4,hr:8e4,g:.07},fu:{al:6e4,cf:35e3,g:.07},ig:{ic:6e4,it:25e3,ot:85e3},col:'#3ec98a',lb:'OPTIMISTIC'}};
+const CD={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#555670',font:{family:'JetBrains Mono',size:10},boxWidth:12,padding:12}}},scales:{x:{ticks:{color:'#555670',font:{family:'JetBrains Mono',size:10}},grid:{color:'#1a1c28'}},y:{ticks:{color:'#555670',font:{family:'JetBrains Mono',size:10}},grid:{color:'#1a1c28'}}}};
+function fmt(n){if(!n&&n!==0)return'—';const a=Math.abs(n),s=n<0?'−':'';if(a>=1e6)return s+(a/1e6).toFixed(1)+'M';return s+Math.round(a).toLocaleString('it-IT')}
+function pj(b,g,y){return{25:b*.4,26:b,27:b*(1+g),28:b*(1+g)*(1+g)}[y]}
+function cS(s){const r=SC[s],Y=[25,26,27,28],o={};Y.forEach(y=>{o['rc'+y]=pj(r.rev.cs,r.rev.g,y);o['ro'+y]=pj(r.rev.op,r.rev.g,y);o['rb'+y]=pj(r.rev.bp,r.rev.g,y);o['rt'+y]=o['rc'+y]+o['ro'+y]+o['rb'+y];o['ce'+y]=pj(r.co.ef,r.co.g,y);o['ci'+y]=pj(r.co.it,r.co.g,y);o['ch'+y]=pj(r.co.hr,r.co.g,y);o['ct'+y]=o['ce'+y]+o['ci'+y]+o['ch'+y];o['fa'+y]=pj(r.fu.al,r.fu.g,y);o['fc'+y]=pj(r.fu.cf,r.fu.g,y);o['ft'+y]=o['fa'+y]+o['fc'+y]});
+o.ii25=r.ig.ic*.6;o.ii26=r.ig.ic*.4;o.it25=r.ig.it*.6;o.it26=r.ig.it*.4;o.io25=r.ig.ot*.6;o.io26=r.ig.ot*.4;o.iT25=o.ii25+o.it25+o.io25;o.iT26=o.ii26+o.it26+o.io26;
+Y.forEach(y=>{const sn=(o['rt'+y]||0)+(o['ct'+y]||0)+(o['ft'+y]||0),ic=o['iT'+y]||0;o['eb'+y]=sn-ic;o['ni'+y]=o['eb'+y]*.75;o['tx'+y]=-o['eb'+y]*.25});return o}
+let ci={},cSc='baseline';
+function go(id,el){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));el.classList.add('active');if(!ci[id]){if(id==='multipli')iM();if(id==='regressione')iR();if(id==='sinergie')iS();if(id==='valuation')iV();ci[id]=true}}
+
+// OVERVIEW
+function iO(){const pts=[];BO.forEach(b=>{[2022,2023,2024].forEach(y=>{pts.push({x:B[b].ro[y],y:B[b].pb[y],g:B[b].g})})});
+new Chart(document.getElementById('ovScatter'),{type:'scatter',data:{datasets:[
+{label:'SGR',data:pts.filter(p=>p.g==='sgr').map(p=>({x:p.x,y:p.y})),backgroundColor:'#d6604d',pointRadius:5},
+{label:'Tradiz.',data:pts.filter(p=>p.g==='trad').map(p=>({x:p.x,y:p.y})),backgroundColor:'#2166ac',pointRadius:5},
+{label:'MB',data:pts.filter(p=>p.g==='mb').map(p=>({x:p.x,y:p.y})),backgroundColor:'#4dac26',pointRadius:7},
+{label:'Regr.',data:[{x:.05,y:RG.pb.m*.05+RG.pb.b},{x:.38,y:RG.pb.m*.38+RG.pb.b}],type:'line',borderColor:'#888',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false}
+]},options:{...CD,scales:{x:{...CD.scales.x,title:{display:true,text:'ROTE',color:'#555670',font:{family:'JetBrains Mono',size:10}}},y:{...CD.scales.y,title:{display:true,text:'P/B',color:'#555670',font:{family:'JetBrains Mono',size:10}}}}}})}
+
+// MULTIPLI
+let peBC,pbBC,peLnC;let cY='2024';
+function setYr(y){cY=y;document.querySelectorAll('.yb').forEach(p=>p.classList.remove('active'));document.querySelector(`.yb[data-year="${y}"]`).classList.add('active');document.getElementById('peYT').textContent=y;document.getElementById('pbYT').textContent=y;uM()}
+function uM(){peBC.data.datasets[0].data=BO.map(b=>B[b].pe[cY]);pbBC.data.datasets[0].data=BO.map(b=>B[b].pb[cY]);peBC.data.datasets[0].backgroundColor=BO.map(b=>B[b].c+'cc');peBC.data.datasets[0].borderColor=BO.map(b=>B[b].c);pbBC.data.datasets[0].backgroundColor=BO.map(b=>B[b].c+'cc');pbBC.data.datasets[0].borderColor=BO.map(b=>B[b].c);peBC.update();pbBC.update()}
+function iM(){
+peBC=new Chart(document.getElementById('peBar'),{type:'bar',data:{labels:BO.map(b=>b.replace('Banca ','')),datasets:[{label:'P/E',data:[],backgroundColor:[],borderColor:[],borderWidth:1}]},options:{...CD,plugins:{...CD.plugins,legend:{display:false}}}});
+pbBC=new Chart(document.getElementById('pbBar'),{type:'bar',data:{labels:BO.map(b=>b.replace('Banca ','')),datasets:[{label:'P/B',data:[],backgroundColor:[],borderColor:[],borderWidth:1}]},options:{...CD,plugins:{...CD.plugins,legend:{display:false}}}});
+uM();
+const Y=['2022','2023','2024','2025','2026','2027'];
+peLnC=new Chart(document.getElementById('peLn'),{type:'line',data:{labels:Y,datasets:BO.map(b=>({label:b.replace('Banca ',''),data:Y.map(y=>B[b].pe[y]),borderColor:B[b].c,backgroundColor:B[b].c+'22',borderWidth:b==='Mediobanca'?3:1.5,pointRadius:b==='Mediobanca'?5:3,tension:.3,borderDash:B[b].g==='trad'?[4,4]:[]}))},options:CD});
+let h='<table class="mt"><thead><tr><th>Banca</th>';Y.forEach(y=>h+=`<th>P/E ${y}</th>`);Y.forEach(y=>h+=`<th>P/B ${y}</th>`);h+='</tr></thead><tbody>';
+BO.forEach(b=>{const x=b==='Mediobanca'?' class="hmb"':'';h+=`<tr${x}><td style="color:${B[b].c};font-weight:600">${b}</td>`;Y.forEach(y=>h+=`<td>${B[b].pe[y]?.toFixed(1)||'—'}</td>`);Y.forEach(y=>h+=`<td>${B[b].pb[y]?.toFixed(1)||'—'}</td>`);h+='</tr>'});
+h+='</tbody></table>';document.getElementById('mtbl').innerHTML=h;ci.multipli=true}
+
+// REGRESSIONE
+function iR(){
+function mkS(id,data,rg,yl){const gr={sgr:[],trad:[],mb:[]};data.forEach(d=>gr[B[d.bk].g].push({x:d.x,y:d.y}));const xn=Math.min(...data.map(d=>d.x))*.9,xx=Math.max(...data.map(d=>d.x))*1.1;
+return new Chart(document.getElementById(id),{type:'scatter',data:{datasets:[
+{label:'SGR',data:gr.sgr,backgroundColor:'#d6604d',pointRadius:6,pointStyle:'rectRot'},
+{label:'Tradiz.',data:gr.trad,backgroundColor:'#2166ac',pointRadius:6},
+{label:'MB',data:gr.mb,backgroundColor:'#4dac26',pointRadius:8,pointStyle:'triangle'},
+{label:`y=${rg.m.toFixed(1)}x${rg.b>=0?'+':''}${rg.b.toFixed(1)}`,data:[{x:xn,y:rg.m*xn+rg.b},{x:xx,y:rg.m*xx+rg.b}],type:'line',borderColor:'#888',borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false}
+]},options:{...CD,scales:{x:{...CD.scales.x,title:{display:true,text:'ROTE',color:'#555670',font:{family:'JetBrains Mono',size:10}}},y:{...CD.scales.y,title:{display:true,text:yl,color:'#555670',font:{family:'JetBrains Mono',size:10}}}}}})}
+const pbd=[],ped=[];BO.forEach(b=>{[2022,2023,2024].forEach(y=>{pbd.push({x:B[b].ro[y],y:B[b].pb[y],bk:b});ped.push({x:B[b].ro[y],y:B[b].pe[y],bk:b})})});
+mkS('sPB',pbd,RG.pb,'P/B');mkS('sPE',ped,RG.pe,'P/E');
+function mkG(id,gd){return new Chart(document.getElementById(id),{type:'bar',data:{labels:gd.map(d=>d.b.replace('Banca ','')),datasets:[{data:gd.map(d=>d.v),backgroundColor:gd.map(d=>d.v>=0?'#d6604d':'#2166ac'),borderColor:gd.map(d=>d.v>=0?'#d6604d':'#2166ac'),borderWidth:1}]},options:{...CD,indexAxis:'y',plugins:{...CD.plugins,legend:{display:false}}}})}
+mkG('gPB',GPB);mkG('gPE',GPE);ci.regressione=true}
+
+// SINERGIE
+let synSC,niLC,scCm,synDn;
+function setSc(s){cSc=s;['pessimistic','baseline','optimistic'].forEach(k=>{const b=document.getElementById('btn-'+k[0]);b.className='sb';if(k===s)b.classList.add(k==='pessimistic'?'sp':k==='baseline'?'sba':'so')});
+const bg=document.getElementById('sbadge'),col=SC[s].col;bg.textContent=SC[s].lb;bg.style.color=col;bg.style.borderColor=col+'88';bg.style.background=col+'22';uST(s);uSC(s);uMC(s)}
+function uST(s){const d=cS(s);const R=[
+{t:'h',l:'SINERGIE DI RICAVO'},{l:'Cross-selling prodotti',k:'rc'},{l:'Ottimizzazione offerta',k:'ro'},{l:'Best practices',k:'rb'},{t:'t',l:'Tot. sinergie ricavi',k:'rt'},
+{t:'h',l:'SINERGIE DI COSTO'},{l:'Efficienze operative',k:'ce'},{l:'Integrazione IT',k:'ci'},{l:'HR rightsizing',k:'ch'},{t:'t',l:'Tot. sinergie costo',k:'ct'},
+{t:'h',l:'SINERGIE DI FUNDING'},{l:'ALM',k:'fa'},{l:'Lower Cost of Funding',k:'fc'},{t:'t',l:'Tot. sinergie funding',k:'ft'},
+{t:'hr',l:'COSTI DI INTEGRAZIONE'},{t:'n',l:'Incentivi & retentions',k:'ii',o:1},{t:'n',l:'Migrazione IT',k:'it',o:1},{t:'n',l:'Altri costi',k:'io',o:1},{t:'nt',l:'Tot. costi integrazione',k:'iT',o:1},
+{t:'s'},{t:'e',l:'EBIT Differenziale',k:'eb'},{l:'Taxes (25%)',k:'tx'},{t:'ni',l:'Net Income Differenziale',k:'ni'}];
+let h='';R.forEach(r=>{if(r.t==='s'){h+='<tr><td colspan="5" style="height:6px"></td></tr>';return}
+if(r.t==='h'||r.t==='hr'){h+=`<tr class="sh"><td colspan="5" style="color:${r.t==='hr'?'var(--red)':'var(--blue)'}">${r.l}</td></tr>`;return}
+const cls=r.t==='t'?'tot':r.t==='nt'?'neg tot':r.t==='n'?'neg':r.t==='e'?'ebt':r.t==='ni'?'nir':'';
+h+=`<tr class="${cls}"><td>${r.l}</td>`;[25,26,27,28].forEach(y=>{if(r.o&&y>26){h+='<td>—</td>';return}let v=d[r.k+y]||0;if(r.t==='n'||r.t==='nt')v=-Math.abs(v);h+=`<td>${fmt(v)}</td>`});h+='</tr>'});
+document.getElementById('stb').innerHTML=h}
+function uSC(s){const d=cS(s),col=SC[s].col;
+const rT=[d.rt25,d.rt26,d.rt27,d.rt28].map(v=>Math.round(v/1e3)),cT=[d.ct25,d.ct26,d.ct27,d.ct28].map(v=>Math.round(v/1e3)),fT=[d.ft25,d.ft26,d.ft27,d.ft28].map(v=>Math.round(v/1e3)),iT=[-(d.iT25||0),-(d.iT26||0),0,0].map(v=>Math.round(v/1e3)),ni=[d.ni25,d.ni26,d.ni27,d.ni28].map(v=>Math.round(v/1e3));
+if(synSC){synSC.data.datasets[0].data=rT;synSC.data.datasets[1].data=cT;synSC.data.datasets[2].data=fT;synSC.data.datasets[3].data=iT;synSC.update('active')}
+if(niLC){niLC.data.datasets[0].data=ni;niLC.data.datasets[0].borderColor=col;niLC.data.datasets[0].backgroundColor=col+'22';niLC.data.datasets[0].pointBackgroundColor=col;niLC.update('active')}
+if(scCm){scCm.data.datasets[0].data=['pessimistic','baseline','optimistic'].map(k=>Math.round(cS(k).ni28/1e3));scCm.update('active')}
+if(synDn){synDn.data.datasets[0].data=[Math.round((d.rt28||0)/1e3),Math.round((d.ct28||0)/1e3),Math.round((d.ft28||0)/1e3)];synDn.update('active')}}
+function uMC(s){const d=cS(s),ni=d.ni28/1e3,mc=23347+ni*12.4,dl=mc-20699;
+const e1=document.getElementById('mcV'),e2=document.getElementById('mcS'),e3=document.getElementById('dlV');
+if(e1)e1.textContent='€'+Math.round(mc).toLocaleString('it-IT')+'M';if(e2)e2.textContent='+ €'+Math.round(ni)+'M NI sinergie × 12.4x';if(e3)e3.textContent='+€'+Math.round(dl).toLocaleString('it-IT')+'M'}
+function iS(){
+synSC=new Chart(document.getElementById('synSt'),{type:'bar',data:{labels:['2025','2026','2027','2028'],datasets:[
+{label:'Ricavi',data:[],backgroundColor:'#5b8fd988',borderColor:'#5b8fd9',borderWidth:1,stack:'s'},
+{label:'Costi',data:[],backgroundColor:'#3ec98a88',borderColor:'#3ec98a',borderWidth:1,stack:'s'},
+{label:'Funding',data:[],backgroundColor:'#d4a84b88',borderColor:'#d4a84b',borderWidth:1,stack:'s'},
+{label:'Integr.',data:[],backgroundColor:'#e05c5c88',borderColor:'#e05c5c',borderWidth:1,stack:'s'}]},options:{...CD,scales:{x:{...CD.scales.x,stacked:true},y:{...CD.scales.y,stacked:true}}}});
+niLC=new Chart(document.getElementById('niLn'),{type:'line',data:{labels:['2025','2026','2027','2028'],datasets:[{label:'Net Income (€K)',data:[],borderColor:'#d4a84b',backgroundColor:'#d4a84b22',pointBackgroundColor:'#d4a84b',borderWidth:2.5,pointRadius:5,fill:true,tension:.3}]},options:CD});
+scCm=new Chart(document.getElementById('scCmp'),{type:'bar',data:{labels:['Pessimistic','Baseline','Optimistic'],datasets:[{label:'NI 2028 (€K)',data:[0,0,0],backgroundColor:['#e05c5c88','#d4a84b88','#3ec98a88'],borderColor:['#e05c5c','#d4a84b','#3ec98a'],borderWidth:2,borderRadius:4}]},options:{...CD,plugins:{...CD.plugins,legend:{display:false}}}});
+synDn=new Chart(document.getElementById('synDn'),{type:'doughnut',data:{labels:['Ricavi','Costi','Funding'],datasets:[{data:[0,0,0],backgroundColor:['#5b8fd9','#3ec98a','#d4a84b'],borderWidth:2,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#555670',font:{family:'JetBrains Mono',size:10},padding:12}}},cutout:'55%'}});
+ci.sinergie=true;setSc('baseline')}
+
+// VALUTAZIONE
+function iV(){const d=cS(cSc),ni=d.ni28/1e3,rr=23347-20699,sv=ni*12.4;
+new Chart(document.getElementById('wf'),{type:'bar',data:{labels:['Standalone\n(MB+BG)','Re-rating\n(P/E 12.4x)','Sinergie\n(NI×12.4x)','Post-OPS\nTotale'],datasets:[{data:[20699,rr,sv,23347+sv],backgroundColor:['#55567088','#5b8fd988','#3ec98a88','#d4a84b88'],borderColor:['#555670','#5b8fd9','#3ec98a','#d4a84b'],borderWidth:2,borderRadius:4}]},options:{...CD,plugins:{...CD.plugins,legend:{display:false}},scales:{x:CD.scales.x,y:{...CD.scales.y,title:{display:true,text:'€ Milioni',color:'#555670',font:{family:'JetBrains Mono',size:10}}}}}});ci.valuation=true}
+
+document.addEventListener('DOMContentLoaded',()=>{iO()});
+</script>
+</body>
+</html>
